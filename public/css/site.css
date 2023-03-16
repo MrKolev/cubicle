@@ -296,3 +296,7 @@ footer {
         opacity: 0;
     }
 }
+
+.err-input{
+    background-color: rgb(251, 213, 213);
+}

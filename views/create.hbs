@@ -3,11 +3,14 @@
   <div class="form">
     <form action="/products/create" method="POST">
       <label for="name">Name</label>
-      <input type="text" id="name" name="name">
+
+      <input {{#if name}}value="{{data.name}}" {{else}}class="err-input" {{/if}} type="text" id="name" name="name">
       <label for="name">Description</label>
-      <textarea id="name" name="description"></textarea>
+      <textarea {{#if description}}""{{else}}class="err-input" {{/if}} id="name"
+        name="description">{{#if description}}{{data.description}}{{/if}}</textarea>
       <label for="image">ImageUrl</label>
-      <input type="text" id="image" name="imageUrl">
+      <input {{#if imageUrl}}value="{{data.imageUrl}}" {{else}}class="err-input" {{/if}} type="text" id="image"
+        name="imageUrl">
       <label for="difficulty">Difficulty</label>
       <select id="difficulty" name="difficultyLevel">
         <option value="1">1 - Very Easy</option>
