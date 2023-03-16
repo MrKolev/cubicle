@@ -6,8 +6,7 @@ import { routers } from "./routes.js";
 
 const app = express();
 setupExpress(app);
-app.use(routers)
-
+app.use(routers);
 
 
 app.listen(config.PORT, ()=> console.log(`Server is running on port:${config.PORT}...`));
