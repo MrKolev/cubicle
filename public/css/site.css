@@ -191,10 +191,10 @@ input[type=submit] {
     padding: 8px;
     text-align: center;
     text-decoration: none;
-    
+    display:inline-block;
     font-size: 18px;
     width: 50%;
-    
+    margin: 5px 5px 5px 25%;
     color: white;
     text-transform: uppercase;
     border-radius: 4px;
@@ -211,10 +211,8 @@ a.btnClear {
     padding: 8px;
     text-align: center;
     text-decoration: none;
-    
     font-size: 15px;
     width: 50%;
-   
     color: white;
     text-transform: uppercase;
     border-radius: 4px;
