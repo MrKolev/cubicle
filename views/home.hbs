@@ -1,12 +1,17 @@
 <main>
   <h1>Browser</h1>
   <form action="/products" method="GET">
-    <input type="text" class="search" name="search" placeholder="Search...">
-    <input type="number" name="from" class="difficulty" placeholder="Difficulty from...">
+    <input {{#if query}} value="{{query.search}}" {{/if}} type="text" class="search" name="search"
+      placeholder="Search...">
+    <input {{#if query}} value="{{query.from}}" {{/if}} type="number" name="from" class="difficulty"
+      placeholder="Difficulty from...">
     <span>-</span>
-    <input type="number" name="to" class="difficulty" placeholder="Difficulty to...">
-    <input type="submit" value="search">
+    <input{{#if query}} value="{{query.to}}" {{/if}} type="number" name="to" class="difficulty"
+      placeholder="Difficulty to...">
+      <input type="submit" value="search">
+      <a class="btnClear" href="/products">clear search</a>
   </form>
+  
   {{#each products}}
   {{>cube}}
   {{/each}}

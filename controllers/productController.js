@@ -7,7 +7,11 @@ const router = Router();
 
 
 router.get("/", (req, res) => {
-    res.render("home", { title: "Home", products: getAll(req.query) })
+    res.render("home", {
+        title: "Home",
+        products: getAll(req.query),
+        query: req.query
+    })
 })
 
 router.get("/create", (req, res) => {
@@ -32,7 +36,6 @@ router.get("/details/:productId", (req, res) => {
         title: "Product Details",
         product: getById(req.params.productId)
     })
-    console.log(req.params.productId);
 })
 
 export { router as productController };
