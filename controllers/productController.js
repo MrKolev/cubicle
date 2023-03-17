@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { getAll, getById, productService } from '../services/productService.js';
+import { validateProduct } from './helpers/helperProduct.js';
 
 
 const router = Router();
@@ -18,23 +19,10 @@ router.get("/create", (req, res) => {
     })
 })
 
-router.post("/create", (req, res) => {
-    // validation input
-    const data = req.body
-    const { name, description, imageUrl } = data
-    if (!name || !description || !imageUrl) {
-        return res.render("create", {
-            title: "Create",
-            name: name,
-            description: description,
-            imageUrl: imageUrl,
-            data
-        })
-    }
-
-    productService(data);
-
-    res.redirect("/products")
+router.post("/create", validateProduct, (req, res) => {
+    productService(req.body)
+        .then(() => res.redirect("/products"))
+        .catch(() => res.status(500).render("500"))
 })
 
 
