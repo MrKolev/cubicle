@@ -7,7 +7,7 @@ const router = Router();
 
 
 router.get("/", (req, res) => {
-    res.render("home", { title: "Home", products: getAll() })
+    res.render("home", { title: "Home", products: getAll(req.query) })
 })
 
 router.get("/create", (req, res) => {
