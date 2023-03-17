@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getAll, productService } from '../services/productService.js';
+import { getAll, getById, productService } from '../services/productService.js';
 
 
 const router = Router();
@@ -11,7 +11,7 @@ router.get("/", (req, res) => {
 
 router.get("/create", (req, res) => {
     res.render("create", {
-        title: "Create", 
+        title: "Create",
         name: true,
         description: true,
         imageUrl: true
@@ -21,7 +21,7 @@ router.get("/create", (req, res) => {
 router.post("/create", (req, res) => {
     // validation input
     const data = req.body
-    const { name, description, imageUrl} = data
+    const { name, description, imageUrl } = data
     if (!name || !description || !imageUrl) {
         return res.render("create", {
             title: "Create",
@@ -33,12 +33,18 @@ router.post("/create", (req, res) => {
     }
 
     productService(data);
-    
+
     res.redirect("/products")
 })
 
+
+
 router.get("/details/:productId", (req, res) => {
-    res.render("details", { title: "Product Details" })
+    res.render("details", {
+        title: "Product Details",
+        product: getById(req.params.productId)
+    })
+    console.log(req.params.productId);
 })
 
 export { router as productController };
