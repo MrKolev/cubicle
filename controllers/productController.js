@@ -1,7 +1,6 @@
 import { Router } from 'express';
-import { getAll, getById, productService } from '../services/productService.js';
 import { validateProduct } from './helpers/helperProduct.js';
-
+import {productsServer} from '../services/productService.js'
 
 const router = Router();
 
@@ -9,7 +8,7 @@ const router = Router();
 router.get("/", (req, res) => {
     res.render("home", {
         title: "Home",
-        products: getAll(req.query),
+        products: "",
         query: req.query
     })
 })
@@ -24,9 +23,12 @@ router.get("/create", (req, res) => {
 })
 
 router.post("/create", validateProduct, (req, res) => {
-    productService(req.body)
+    console.log(req.body);
+    productsServer.create(req.body)
         .then(() => res.redirect("/products"))
-        .catch(() => res.status(500).render("500"))
+        .catch((error) => {
+            console.log(error) 
+            res.status(500).render("500")})
 })
 
 

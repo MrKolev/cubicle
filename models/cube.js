@@ -1,9 +1,38 @@
-export class Cube {
-    constructor(id, {name, description, imageUrl, difficultyLevel}) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.imageUrl = imageUrl;
-        this.difficultyLevel = difficultyLevel;
-    }
-}
+import mongoose, { model, Schema } from "mongoose";
+
+
+const cubeSchema = new Schema({
+    name: {
+        type: String,
+        required: true,
+        lowercase: true,
+        minLength: 2
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    imageUrl: {
+        type: String,
+        required: true,
+        validate: /^https?/
+    },
+    difficultyLevel: {
+        type: Number,
+        required: true,
+        min: 1,
+        max: 6
+    },
+    accessories: [{
+        type: mongoose.Types.ObjectId,
+        ref: "Accessory"
+    }]
+});
+ 
+export const Cube = model('Cube', cubeSchema);
+
+
+
+
+
+
