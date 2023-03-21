@@ -1,16 +1,19 @@
 import { Router } from 'express';
 import { validateProduct } from './helpers/helperProduct.js';
-import {productsServer} from '../services/productService.js'
+import { productsServer } from '../services/productService.js'
 
 const router = Router();
 
-
 router.get("/", (req, res) => {
-    res.render("home", {
-        title: "Home",
-        products: "",
-        query: req.query
-    })
+    productsServer.getAll(req.query)
+        .then((products) => {
+            res.render("home", {
+                title: "Home",
+                products,
+                query: req.query
+            })
+        })
+
 })
 
 router.get("/create", (req, res) => {
@@ -23,21 +26,23 @@ router.get("/create", (req, res) => {
 })
 
 router.post("/create", validateProduct, (req, res) => {
-    console.log(req.body);
     productsServer.create(req.body)
         .then(() => res.redirect("/products"))
         .catch((error) => {
-            console.log(error) 
-            res.status(500).render("500")})
+            console.log(error)
+            res.status(500).render("500")
+        })
 })
 
-
-
 router.get("/details/:productId", (req, res) => {
-    res.render("details", {
-        title: "Product Details",
-        product: getById(req.params.productId)
-    })
+    productsServer.getById(req.params.productId)
+        .then((products) => {
+            res.render("details", {
+                title: "Product Details",
+                products,
+                query: req.query
+            })
+        })
 })
 
 export { router as productController };
