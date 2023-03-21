@@ -1,3 +1,4 @@
+import { Accessory } from "../models/accessory.js";
 import { Cube } from "../models/cube.js"
 
 function create(data) {
@@ -23,8 +24,17 @@ function getAll(query) {
 
 }
 
+async function attachAccessory(productId, accessoryId) {
+    let product = await Cube.findById(productId)
+    let accessory = await Accessory.findById(accessoryId.accessory);
+    product.accessories.push(accessory);
+    return product.save();
+}
+
+
 export const productsServer = {
     create,
     getAll,
-    getById
+    getById,
+    attachAccessory
 }

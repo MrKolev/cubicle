@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { validateProduct } from './helpers/helperProduct.js';
 import { productsServer } from '../services/productService.js'
+import { accessoriesServer } from '../services/accessoryService.js';
 
 const router = Router();
 
@@ -24,6 +25,25 @@ router.get("/create", (req, res) => {
         imageUrl: true
     })
 })
+router.get("/:productId/attach", async (req, res) => {
+    let accessories = await accessoriesServer.getNameandId();
+    let product = await productsServer.getById(req.params.productId);
+
+    res.render("attachAccessory", {
+        product,
+        accessories
+    })
+
+})
+router.post("/:productId/attach", async (req, res) => {
+       productsServer.attachAccessory(req.params.productId, req.body)
+    .then(() => res.redirect(`/products/details/${req.params.productId}`))
+    .catch((error) => {
+        console.log(error)
+        res.status(500).render("500")
+    })
+
+})
 
 router.post("/create", validateProduct, (req, res) => {
     productsServer.create(req.body)
@@ -40,7 +60,8 @@ router.get("/details/:productId", (req, res) => {
             res.render("details", {
                 title: "Product Details",
                 products,
-                query: req.query
+                query: req.query,
+                accessory
             })
         })
 })
