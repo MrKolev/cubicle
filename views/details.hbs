@@ -5,7 +5,7 @@
     <p><span>Description:</span>{{products.description}}</p>
     <p><span>Difficulty level:</span> {{products.difficultyLevel}}</p>
     <a class="btn" href="/products">Back</a>
-    <a class="btn" href="/products/{{product._id}}/attach">Attach</a>
+    <a class="btn" href="/products/{{products._id}}/attach">Attach</a>
     {{!-- {{#if isAuthenticated}} --}}
       {{!-- 
       <a class="btn" href="/products/{{product._id}}/edit">Edit</a>
@@ -14,7 +14,7 @@
   </div>
   <h2>Accessories</h2>
   <div class="accessories">
-    {{#each product.accessories}}
+    {{#each products.accessories}}
       {{>accessory}}
     {{else}}
       <h3 class="italic">This cube has no accessories yet...</h3>

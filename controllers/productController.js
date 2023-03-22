@@ -26,8 +26,9 @@ router.get("/create", (req, res) => {
     })
 })
 router.get("/:productId/attach", async (req, res) => {
-    let accessories = await accessoriesServer.getNameandId();
     let product = await productsServer.getById(req.params.productId);
+    let accessories = await accessoriesServer.getNameAndId(product.accessories);
+    console.log(accessories);
 
     res.render("attachAccessory", {
         product,
@@ -37,7 +38,8 @@ router.get("/:productId/attach", async (req, res) => {
 })
 router.post("/:productId/attach", async (req, res) => {
        productsServer.attachAccessory(req.params.productId, req.body)
-    .then(() => res.redirect(`/products/details/${req.params.productId}`))
+    .then((product) =>
+     res.redirect(`/products/details/${req.params.productId}`))
     .catch((error) => {
         console.log(error)
         res.status(500).render("500")
@@ -55,13 +57,13 @@ router.post("/create", validateProduct, (req, res) => {
 })
 
 router.get("/details/:productId", (req, res) => {
-    productsServer.getById(req.params.productId)
+    productsServer.getByIdWithAccessory(req.params.productId)
         .then((products) => {
+            products.accessories.forEach(accessory => accessory.productId = req.params.productId)
             res.render("details", {
                 title: "Product Details",
                 products,
-                query: req.query,
-                accessory
+                query: req.query
             })
         })
 })

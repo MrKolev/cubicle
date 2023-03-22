@@ -11,7 +11,8 @@ header ul {
 }
 
 img {
-    height: 200px;
+    max-height: 200px;
+    height: auto;
     width: auto;
 }
 
@@ -191,7 +192,7 @@ input[type=submit] {
     padding: 8px;
     text-align: center;
     text-decoration: none;
-    display:inline-block;
+    display: inline-block;
     font-size: 18px;
     width: 50%;
     margin: 5px 5px 5px 25%;
@@ -259,7 +260,7 @@ h2 {
 .accessories .accessory {
     display: inline-block;
     background-color: #f3f3f2;
-    width: 20%;
+    width: auto;
     padding: 1%;
     margin: 1%;
 }
@@ -317,4 +318,21 @@ footer {
 
 .err-input {
     background-color: rgb(251, 213, 213);
+}
+
+img.delBtn {
+    width: 20px;
+    height: 20px;
+    float: left;
+}
+
+а.delBtn {
+    display: block;
+    margin: 0 auto;
+    width: 25px;
+    height: 25px;
+}
+img.delBtn:hover {
+    background-color: #d22e2e;
+    cursor: pointer;
 }

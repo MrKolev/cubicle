@@ -9,8 +9,14 @@ function create(data) {
 function getById(id) {
     return Cube.findById(id).lean();
 }
+function getByIdWithAccessory(id) {
+    return Cube.findById(id)
+        .populate("accessories")
+        .lean();
+}
 
 function getAll(query) {
+    
     if (query.search) {
         return Cube.find({ name: query.search }).lean();
     }
@@ -31,10 +37,18 @@ async function attachAccessory(productId, accessoryId) {
     return product.save();
 }
 
+async function deleteAccessory(accerID, productId) {
+    let product = await Cube.findById(productId);
+    product.accessories = product.accessories.filter((x) => x._id != accerID);
+    return product.save();
+}
+
 
 export const productsServer = {
     create,
     getAll,
     getById,
-    attachAccessory
+    attachAccessory,
+    getByIdWithAccessory,
+    deleteAccessory
 }
