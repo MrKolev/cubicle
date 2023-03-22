@@ -15,19 +15,19 @@ function getByIdWithAccessory(id) {
         .lean();
 }
 
-function getAll(query) {
-    
-    if (query.search) {
-        return Cube.find({ name: query.search }).lean();
+async function getAll(query) {
+    let products = null;
+    if (query.from || query.to) {
+        products = await Cube.find({ difficultyLevel: { $gte: query.from, $lte: query.to } }).lean();
+    } else {
+        products = await Cube.find({}).lean();
     }
-    if (query.from) {
-        return Cube.find({ difficultyLevel: { $gte: query.from } }).lean()
-    }
-    if (query.to) {
-        return Cube.find({ difficultyLevel: { $lte: query.to } }).lean()
-    }
-    return Cube.find({}).lean();
 
+    if (query.search) {
+        products = products.filter(x => x.name.includes(query.search))
+    }
+console.log(products);
+    return products
 }
 
 async function attachAccessory(productId, accessoryId) {

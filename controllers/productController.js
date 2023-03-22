@@ -8,11 +8,15 @@ const router = Router();
 router.get("/", (req, res) => {
     productsServer.getAll(req.query)
         .then((products) => {
+            console.log(products);
             res.render("home", {
                 title: "Home",
                 products,
                 query: req.query
             })
+        })
+        .catch((err) => {
+            console.log(err);
         })
 
 })

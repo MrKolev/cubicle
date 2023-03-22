@@ -6,7 +6,8 @@ const cubeSchema = new Schema({
         type: String,
         required: true,
         lowercase: true,
-        minLength: 2
+        minLength: 2,
+        searchable: true
     },
     description: {
         type: String,
