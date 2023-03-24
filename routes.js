@@ -1,12 +1,14 @@
 import { Router } from 'express';
 import { aboutController } from './controllers/aboutController.js';
 import { accessoriesControllers } from './controllers/accessoryController.js';
+import { authControler } from './controllers/authControler.js';
 import { productController } from './controllers/productController.js';
 
 export const routers = Router();
 
 
 
+routers.use("/auth", authControler);
 routers.use("/products", productController);
 routers.use("/accessories", accessoriesControllers);
 routers.use("/about", aboutController);

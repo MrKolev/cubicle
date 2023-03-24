@@ -316,8 +316,18 @@ footer {
     }
 }
 
-.err-input {
-    background-color: rgb(251, 213, 213);
+input[type=text].err-input,
+input[type=number].err-input,
+input[type=password].err-input,
+textarea.err-input {
+    width: 100%;
+    display: inline-block;
+    border: 1px solid #f30c0c;
+    box-sizing: border-box;
+    padding: 12px 20px 12px 12px;
+    border-radius: 0 4px 4px 4px;
+    margin: 8px 0 2em;
+    
 }
 
 img.delBtn {

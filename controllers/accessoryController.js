@@ -20,7 +20,7 @@ router.get(`/delete/:accerID/:productId`, (req, res) => {
         .then(() => res.redirect(`/products/details/${productId}`))
         .catch((error) => {
             console.log(error)
-            res.status(500).render("500")
+            res.status(500).render("500");
         })
 })
 
