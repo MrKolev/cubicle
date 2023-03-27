@@ -15,11 +15,17 @@ router.get('/login', (req, res) => {
 router.post('/login', async (req, res) => {
 
     const { username, password } = req.body
+    
     try {
 
         if (!username || !password) throw { message: "Fill in all the fields." }
 
-        await authService.login(username, password)
+        let token = await authService.login(username, password);
+
+        res.cookie("USER_SESSION", token);
+
+        res.redirect("/")
+
 
     } catch (error) {
         res.render("login", {
@@ -58,13 +64,14 @@ router.post('/register', async (req, res) => {
 
         if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) throw { message: "You have entered an invalid email address!" }
 
-        if (await authService.userCheck(username)) throw { message: "Username already exists." }
-        if (await authService.emailCheck(email)) throw { message: "Email address is already associated with another user." }
+        await authService.userCheck(username);
+        await authService.emailCheck(email);
 
-        await authService.register(username, password, email);
+        let token = await authService.register(username, password, email);
+
+        res.cookie("USER_SESSION", token);
 
         res.redirect("/");
-
 
     } catch (error) {
         res.render("register", {

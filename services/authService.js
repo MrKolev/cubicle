@@ -1,27 +1,30 @@
 import { config } from "../config/config.js"
 import { User } from "../models/uresrs.js"
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+const { sign } = jwt;
 
-function login(username, password) {
 
+
+const token = (user) => {
+    return sign({ _id: user._id }, config.SECRET_TOKEN)
+}
+
+async function login(username, password) {
+    const user = await User.findOne({ userName: username });
+    if (!user) throw { message: "Wrong password or username" }
+    if (!(await bcrypt.compare(password, user.password))) throw { message: "Wrong password or username" }
+    return token(user);
 }
 
 async function userCheck(username) {
-    const userNameData = await User.find({ userName: username });
-
-    if (userNameData.length != 0) {
-        return true;
-    }    
-    return false;
+    const user = await User.findOne({ userName: username });
+    if (user) throw { message: "Username already exists." }
 }
 
 async function emailCheck(email) {
-    const data = await User.find({ email: email });
-
-    if (data.length != 0) {
-        return true;
-    }
-    return false;
+    const user = await User.findOne({ email: email });
+    if (user) throw { message: "Email address is already associated with another user." }
 }
 
 async function register(userName, password, email) {
@@ -35,7 +38,7 @@ async function register(userName, password, email) {
         email
     })
 
-    return user.save();
+    return token(user.save());
 }
 
 export const authService = {
