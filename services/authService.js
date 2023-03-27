@@ -19,12 +19,12 @@ async function login(username, password) {
 
 async function userCheck(username) {
     const user = await User.findOne({ userName: username });
-    if (user) throw { message: "Username already exists." }
+    if (user) throw { message: "Username already exists!" }
 }
 
 async function emailCheck(email) {
     const user = await User.findOne({ email: email });
-    if (user) throw { message: "Email address is already associated with another user." }
+    if (user) throw { message: "Email address is already associated with another user!" }
 }
 
 async function register(userName, password, email) {
