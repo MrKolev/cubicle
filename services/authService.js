@@ -12,8 +12,8 @@ const token = (user) => {
 
 async function login(username, password) {
     const user = await User.findOne({ userName: username });
-    if (!user) throw { message: "Wrong password or username" }
-    if (!(await bcrypt.compare(password, user.password))) throw { message: "Wrong password or username" }
+    if (!user) throw { message: "Wrong password or username!" }
+    if (!(await bcrypt.compare(password, user.password))) throw { message: "Wrong password or username!" }
     return token(user);
 }
 
