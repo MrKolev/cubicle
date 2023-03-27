@@ -7,7 +7,7 @@ import { productController } from './controllers/productController.js';
 export const routers = Router();
 
 
-
+routers.use("/", productController);
 routers.use("/auth", authControler);
 routers.use("/products", productController);
 routers.use("/accessories", accessoriesControllers);

@@ -237,13 +237,14 @@ span.error {
     background: #EF5542;
     color: white;
     padding: 10px;
+    width: 50%;
     text-align: center;
     text-decoration: none;
     border-radius: 20px;
     font-weight: normal;
-    position: relative;
-    float: right;
-    margin-top: 20px;
+    position: center;
+    /* float: center; */
+    margin: auto;
     overflow: hidden;
     display: block;
 }

@@ -1,9 +1,11 @@
 const configPorts = {
     development:{
 PORT: 5000,
+SALT_ROUNDS: 1
     },
     production:{
 PORT: 80,
+SALT_ROUNDS: 10
     }
 }
 

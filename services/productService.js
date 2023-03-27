@@ -23,10 +23,7 @@ async function getAll(query) {
         products = await Cube.find({}).lean();
     }
 
-    if (query.search) {
-        products = products.filter(x => x.name.includes(query.search))
-    }
-console.log(products);
+    if (query.search) products = products.filter(x => x.name.includes(query.search))
     return products
 }
 
