@@ -13,9 +13,7 @@ router.get('/login', (req, res) => {
 })
 
 router.post('/login', async (req, res) => {
-
     const { username, password } = req.body
-    
     try {
 
         if (!username || !password) throw { message: "Fill in all the fields." }
@@ -25,7 +23,6 @@ router.post('/login', async (req, res) => {
         res.cookie("USER_SESSION", token);
 
         res.redirect("/")
-
 
     } catch (error) {
         res.render("login", {
