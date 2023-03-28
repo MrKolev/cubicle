@@ -8,7 +8,6 @@ const router = Router();
 router.get("/", (req, res) => {
     productsServer.getAll(req.query)
         .then((products) => {
-            console.log(products);
             res.render("home", {
                 title: "Home",
                 products,
@@ -17,6 +16,7 @@ router.get("/", (req, res) => {
         })
         .catch((err) => {
             console.log(err);
+            res.status(500).render("500")
         })
 
 })
@@ -32,7 +32,6 @@ router.get("/create", (req, res) => {
 router.get("/:productId/attach", async (req, res) => {
     let product = await productsServer.getById(req.params.productId);
     let accessories = await accessoriesServer.getNameAndId(product.accessories);
-    console.log(accessories);
 
     res.render("attachAccessory", {
         product,

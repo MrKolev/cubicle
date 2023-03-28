@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { config } from "../config/config.js";
 import { authService } from "../services/authService.js";
 
 const router = Router();
@@ -20,7 +21,7 @@ router.post('/login', async (req, res) => {
 
         let token = await authService.login(username, password);
 
-        res.cookie("USER_SESSION", token);
+        res.cookie(config.TOKEN_NAME, token);
 
         res.redirect("/")
 
@@ -66,7 +67,7 @@ router.post('/register', async (req, res) => {
 
         let token = await authService.register(username, password, email);
 
-        res.cookie("USER_SESSION", token);
+        res.cookie(config.TOKEN_NAME, token);
 
         res.redirect("/");
 

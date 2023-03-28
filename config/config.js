@@ -2,12 +2,14 @@ const configPorts = {
     development:{
 PORT: 5000,
 SALT_ROUNDS: 1,
-SECRET_TOKEN: "mySerkret"
+SECRET_TOKEN: "mySerkret",
+TOKEN_NAME: "TOKEN",
     },
     production:{
 PORT: 80,
 SALT_ROUNDS: 10,
-SECRET_TOKEN: "serkretInUser"
+SECRET_TOKEN: "serkretInUser",
+TOKEN_NAME: "USER_SESSION",
     }
 }
 

@@ -8,6 +8,8 @@ import { routers } from "./routes.js";
 const app = express();
 setupExpress(app);
 setupMongoose(app);
+
+
 app.use(routers);
 
 

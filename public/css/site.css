@@ -126,6 +126,11 @@ a {
     text-transform: uppercase;
 }
 
+a.login {
+    text-decoration: underline;
+    color: rgb(0, 0, 0);
+}
+
 div.details {
     display: block;
     margin: auto;
