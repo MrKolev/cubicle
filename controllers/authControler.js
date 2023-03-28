@@ -10,7 +10,6 @@ router.get('/login', (req, res) => {
         username: true,
         password: true,
     })
-
 })
 
 router.post('/login', async (req, res) => {

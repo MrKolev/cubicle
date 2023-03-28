@@ -23,3 +23,28 @@ export function auth() {
     }
 
 }
+
+export function isLoggedIn(req, res, next) {
+    if(req.user){
+        next();
+    }else{
+        res.redirect("/auth/login")
+    }
+}
+
+export function isClient(req, res, next) {
+    if(!req.user){
+        next();
+    }else{
+        res.redirect("/")
+    }
+}
+
+export function isAdmin(req, res, next) {
+    if(req.user.admin){
+        next();
+    }else{
+        res.redirect("/")
+    }
+}
+

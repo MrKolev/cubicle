@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { validateProduct } from './helpers/helperProduct.js';
 import { productsServer } from '../services/productService.js'
 import { accessoriesServer } from '../services/accessoryService.js';
+import { isLoggedIn } from '../middlewares/auth.js';
 
 const router = Router();
 
@@ -11,7 +12,8 @@ router.get("/", (req, res) => {
             res.render("home", {
                 title: "Home",
                 products,
-                query: req.query
+                query: req.query,
+                user: req.user
             })
         })
         .catch((err) => {
@@ -21,7 +23,7 @@ router.get("/", (req, res) => {
 
 })
 
-router.get("/create", (req, res) => {
+router.get("/create", isLoggedIn, (req, res) => {
     res.render("create", {
         title: "Create",
         name: true,
@@ -29,7 +31,7 @@ router.get("/create", (req, res) => {
         imageUrl: true
     })
 })
-router.get("/:productId/attach", async (req, res) => {
+router.get("/:productId/attach", isLoggedIn, async (req, res) => {
     let product = await productsServer.getById(req.params.productId);
     let accessories = await accessoriesServer.getNameAndId(product.accessories);
 
@@ -39,18 +41,18 @@ router.get("/:productId/attach", async (req, res) => {
     })
 
 })
-router.post("/:productId/attach", async (req, res) => {
-       productsServer.attachAccessory(req.params.productId, req.body)
-    .then((product) =>
-     res.redirect(`/products/details/${req.params.productId}`))
-    .catch((error) => {
-        console.log(error)
-        res.status(500).render("500")
-    })
+router.post("/:productId/attach", isLoggedIn, async (req, res) => {
+    productsServer.attachAccessory(req.params.productId, req.body)
+        .then((product) =>
+            res.redirect(`/products/details/${req.params.productId}`))
+        .catch((error) => {
+            console.log(error)
+            res.status(500).render("500")
+        })
 
 })
 
-router.post("/create", validateProduct, (req, res) => {
+router.post("/create", validateProduct, isLoggedIn, (req, res) => {
     productsServer.create(req.body)
         .then(() => res.redirect("/products"))
         .catch((error) => {
@@ -62,11 +64,19 @@ router.post("/create", validateProduct, (req, res) => {
 router.get("/details/:productId", (req, res) => {
     productsServer.getByIdWithAccessory(req.params.productId)
         .then((products) => {
-            products.accessories.forEach(accessory => accessory.productId = req.params.productId)
+            let isLoading = false;
+            if (req.user) {
+                isLoading = true;
+            }
+            products.accessories.forEach(accessory => {
+                accessory.productId = req.params.productId;
+                accessory.user = isLoading;
+            })
             res.render("details", {
                 title: "Product Details",
                 products,
-                query: req.query
+                query: req.query,
+                user: isLoading
             })
         })
 })
