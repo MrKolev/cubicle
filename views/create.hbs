@@ -1,7 +1,7 @@
 <main>
   <h1>Create</h1>
   <div class="form">
-    <form action="/products/create" method="POST">
+    <form action="/products/create/create" method="POST">
       <label for="name">Name</label>
 
       <input {{#if name}}value="{{data.name}}" {{else}}class="err-input" {{/if}} type="text" id="name" name="name">
@@ -24,3 +24,7 @@
     </form>
   </div>
 </main>
+
+<script>
+    document.querySelector(`option[value="{{data.difficultyLevel}}"]`).setAttribute("selected", "true");
+</script>

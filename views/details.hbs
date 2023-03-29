@@ -7,20 +7,17 @@
     <a class="btn" href="/products">Back</a>
     {{#if user}}
     <a class="btn" href="/products/{{products._id}}/attach">Attach</a>
+    <a class="btn" href="/products/{{products._id}}/edit">Edit</a>
+    <a class="btn" href="/products/{{products._id}}/delete">Delete</a>
     {{/if}}
-    {{!-- {{#if isAuthenticated}} --}}
-      {{!-- 
-      <a class="btn" href="/products/{{product._id}}/edit">Edit</a>
-      <a class="btn" href="/products/{{product._id}}/delete">Delete</a> --}}
-    {{!-- {{/if}} --}}
   </div>
   <h2>Accessories</h2>
-  
+
   <div class="accessories">
     {{#each products.accessories}}
-      {{> accessory}}   
+    {{>accessory}}
     {{else}}
-      <h3 class="italic">This cube has no accessories yet...</h3>
+    <h3 class="italic">This cube has no accessories yet...</h3>
     {{/each}}
   </div>
 </main>

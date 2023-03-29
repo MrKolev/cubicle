@@ -3,7 +3,9 @@ const router = Router();
 
 
 router.get("/", (req, res) => {
-    res.render("about", {title:`About`})
+    res.render("about", {
+        title: `About`
+    })
 })
 
 export { router as aboutController };

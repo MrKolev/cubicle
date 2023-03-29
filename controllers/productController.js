@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { validateProduct } from './helpers/helperProduct.js';
+import { validateProductInput } from './helpers/helperProduct.js';
 import { productsServer } from '../services/productService.js'
 import { accessoriesServer } from '../services/accessoryService.js';
 import { isLoggedIn } from '../middlewares/auth.js';
@@ -13,14 +13,12 @@ router.get("/", (req, res) => {
                 title: "Home",
                 products,
                 query: req.query,
-                user: req.user
-            })
+            });
         })
         .catch((err) => {
             console.log(err);
             res.status(500).render("500")
-        })
-
+        });
 })
 
 router.get("/create", isLoggedIn, (req, res) => {
@@ -37,28 +35,48 @@ router.get("/:productId/attach", isLoggedIn, async (req, res) => {
 
     res.render("attachAccessory", {
         product,
-        accessories
-    })
-
+        accessories,
+        title: "Attach accessory"
+    });
 })
+
+router.get("/products/:productId/edit", isLoggedIn, async (req, res) => {
+    let product = await productsServer.getById(req.params.productId);
+    res.render("editCube", {
+        title: "Edit Cube",
+        name: true,
+        description: true,
+        imageUrl: true,
+        data: product
+    });
+})
+
 router.post("/:productId/attach", isLoggedIn, async (req, res) => {
     productsServer.attachAccessory(req.params.productId, req.body)
         .then((product) =>
             res.redirect(`/products/details/${req.params.productId}`))
         .catch((error) => {
-            console.log(error)
-            res.status(500).render("500")
-        })
-
+            console.log(error);
+            res.status(500).render("500");
+        });
 })
 
-router.post("/create", validateProduct, isLoggedIn, (req, res) => {
+router.post("/:from/create", validateProductInput, isLoggedIn, (req, res) => {
     productsServer.create(req.body)
         .then(() => res.redirect("/products"))
         .catch((error) => {
-            console.log(error)
-            res.status(500).render("500")
-        })
+            console.log(error);
+            res.status(500).render("500");
+        });
+})
+
+router.post("/:from/:productId/edit", validateProductInput, isLoggedIn, (req, res) => {
+    productsServer.updateOne(req.params.productId ,req.body)
+        .then(() => res.redirect("/products/details/" + req.params.productId))
+        .catch((error) => {
+            console.log(error);
+            res.status(500).render("500");
+        });
 })
 
 router.get("/details/:productId", (req, res) => {
@@ -70,15 +88,14 @@ router.get("/details/:productId", (req, res) => {
             }
             products.accessories.forEach(accessory => {
                 accessory.productId = req.params.productId;
-                accessory.user = isLoading;
-            })
+                accessory.admin = isLoading;
+            });
             res.render("details", {
                 title: "Product Details",
                 products,
-                query: req.query,
-                user: isLoading
-            })
-        })
+                query: req.query
+            });
+        });
 })
 
 export { router as productController };

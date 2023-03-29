@@ -1,10 +1,11 @@
 import { Router } from "express";
 import { config } from "../config/config.js";
+import { isClient } from "../middlewares/auth.js";
 import { authService } from "../services/authService.js";
 
 const router = Router();
 
-router.get('/login', (req, res) => {
+router.get('/login', isClient, (req, res) => {
     res.render("login", {
         title: "Login",
         username: true,
@@ -12,7 +13,12 @@ router.get('/login', (req, res) => {
     })
 })
 
-router.post('/login', async (req, res) => {
+router.get('/logout', (req, res) => {
+    res.clearCookie(config.TOKEN_NAME)
+    .redirect("/")
+})
+
+router.post('/login',isClient, async (req, res) => {
     const { username, password } = req.body
     try {
 
@@ -33,7 +39,7 @@ router.post('/login', async (req, res) => {
 })
 
 
-router.get('/register', (req, res) => {
+router.get('/register',isClient, (req, res) => {
     res.render("register", {
         title: "Register",
         username: true,
@@ -44,7 +50,7 @@ router.get('/register', (req, res) => {
 
 })
 
-router.post('/register', async (req, res) => {
+router.post('/register', isClient, async (req, res) => {
     const {
         username,
         password,

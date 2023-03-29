@@ -11,6 +11,9 @@ export function auth() {
             if (token) {
                 let verifycode = verify(token, config.SECRET_TOKEN)
                 req.user = verifycode;
+                res.locals.user = verifycode;
+                res.locals.admin = verifycode.admin;
+
             }
             next();
             
