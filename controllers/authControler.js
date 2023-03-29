@@ -5,6 +5,11 @@ import { authService } from "../services/authService.js";
 
 const router = Router();
 
+router.get('/logout', (req, res) => {
+    res.clearCookie(config.TOKEN_NAME)
+    .redirect("/")
+})
+
 router.get('/login', isClient, (req, res) => {
     res.render("login", {
         title: "Login",
@@ -13,9 +18,15 @@ router.get('/login', isClient, (req, res) => {
     })
 })
 
-router.get('/logout', (req, res) => {
-    res.clearCookie(config.TOKEN_NAME)
-    .redirect("/")
+router.get('/register',isClient, (req, res) => {
+    res.render("register", {
+        title: "Register",
+        username: true,
+        email: true,
+        password: true,
+        repeatPassword: true
+    })
+
 })
 
 router.post('/login',isClient, async (req, res) => {
@@ -36,18 +47,6 @@ router.post('/login',isClient, async (req, res) => {
             error
         })
     }
-})
-
-
-router.get('/register',isClient, (req, res) => {
-    res.render("register", {
-        title: "Register",
-        username: true,
-        email: true,
-        password: true,
-        repeatPassword: true
-    })
-
 })
 
 router.post('/register', isClient, async (req, res) => {

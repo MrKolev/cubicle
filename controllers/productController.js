@@ -29,6 +29,7 @@ router.get("/create", isLoggedIn, (req, res) => {
         imageUrl: true
     })
 })
+
 router.get("/:productId/attach", isLoggedIn, async (req, res) => {
     let product = await productsServer.getById(req.params.productId);
     let accessories = await accessoriesServer.getNameAndId(product.accessories);
@@ -49,6 +50,25 @@ router.get("/products/:productId/edit", isLoggedIn, async (req, res) => {
         imageUrl: true,
         data: product
     });
+})
+
+router.get("/details/:productId", (req, res) => {
+    productsServer.getByIdWithAccessory(req.params.productId)
+        .then((products) => {
+            let isLoading = false;
+            if (req.user) {
+                isLoading = true;
+            }
+            products.accessories.forEach(accessory => {
+                accessory.productId = req.params.productId;
+                accessory.admin = isLoading;
+            });
+            res.render("details", {
+                title: "Product Details",
+                products,
+                query: req.query
+            });
+        });
 })
 
 router.post("/:productId/attach", isLoggedIn, async (req, res) => {
@@ -79,23 +99,6 @@ router.post("/:from/:productId/edit", validateProductInput, isLoggedIn, (req, re
         });
 })
 
-router.get("/details/:productId", (req, res) => {
-    productsServer.getByIdWithAccessory(req.params.productId)
-        .then((products) => {
-            let isLoading = false;
-            if (req.user) {
-                isLoading = true;
-            }
-            products.accessories.forEach(accessory => {
-                accessory.productId = req.params.productId;
-                accessory.admin = isLoading;
-            });
-            res.render("details", {
-                title: "Product Details",
-                products,
-                query: req.query
-            });
-        });
-})
+
 
 export { router as productController };
