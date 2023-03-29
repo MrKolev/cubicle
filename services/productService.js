@@ -44,6 +44,10 @@ async function updateOne(productId, data){
    return Cube.updateOne({_id: productId}, data)
 }
 
+async function deleteOneProduct(productId){
+   return Cube.deleteOne({_id: productId})
+}
+
 
 export const productsServer = {
     create,
@@ -52,5 +56,6 @@ export const productsServer = {
     attachAccessory,
     getByIdWithAccessory,
     deleteAccessory,
-    updateOne
+    updateOne,
+    deleteOneProduct
 }

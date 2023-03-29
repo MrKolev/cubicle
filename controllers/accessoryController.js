@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { isAdmin, isLoggedIn } from '../middlewares/auth.js';
+import { isAdmin, isLogin } from '../middlewares/auth.js';
 import { accessoriesServer } from '../services/accessoryService.js';
 import { productsServer } from '../services/productService.js';
 import { validateAccessory } from './helpers/helperAccessory.js';
@@ -14,7 +14,7 @@ router.get('/create', isAdmin, (req, res) => {
     })
 })
 
-router.get(`/delete/:accerID/:productId`, isLoggedIn, (req, res) => {
+router.get(`/delete/:accerID/:productId`, isLogin, (req, res) => {
     let accerID = req.params.accerID
     let productId = req.params.productId
     productsServer.deleteAccessory(accerID, productId)

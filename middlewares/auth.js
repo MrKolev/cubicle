@@ -27,7 +27,7 @@ export function auth() {
 
 }
 
-export function isLoggedIn(req, res, next) {
+export function isLogin(req, res, next) {
     if(req.user){
         next();
     }else{
@@ -35,8 +35,18 @@ export function isLoggedIn(req, res, next) {
     }
 }
 
-export function isClient(req, res, next) {
+export function notLogin(req, res, next) {
     if(!req.user){
+        next();
+    }else{
+        res.redirect("/")
+    }
+}
+
+export function isCreator(req, res, next) {
+    const productId = req.params.productId;
+
+    if(req.user.id === productId){
         next();
     }else{
         res.redirect("/")

@@ -1,17 +1,37 @@
 export function validateProductInput(req, res, next) {
-    const { name, description, imageUrl } = req.body
-    
-    if (!name || !description || !imageUrl) {
-        const _id = req.params.productId
-        const from = req.params.from
-        const data = {_id, name, description, imageUrl }
+    let { name, description, imageUrl } = req.body
+    try {
+        if (!name || name == " " || !description || description == " " || !imageUrl) {
+            throw { message: 'All fields must be filled.' };
+        }
+        if (name.length < 2) {
+            name = false;
+            throw { message: 'Name must be at least 2 characters.' };
+        };
+        if (description.length < 2) {
+            description = false;
+            throw { message: 'Description must be at least 2 characters.' };
+        };
+        if (!(/^https?/.test(imageUrl))) {
+            imageUrl = false;
+            throw { message: 'Image URL must be a valid.' };
+        };
+
+        next();
+
+    } catch (error) {
+        const from = req.params.from;
+        const data = req.body;
+        data._id = req.params.productId;
         return res.render(from, {
             title: from,
-            name: name,
-            description: description,
-            imageUrl: imageUrl,
-            data
+            name,
+            description,
+            imageUrl,
+            data,
+            error
         })
     }
-    next();
+
+
 }

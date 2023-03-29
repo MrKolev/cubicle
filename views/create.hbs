@@ -2,14 +2,16 @@
   <h1>Create</h1>
   <div class="form">
     <form action="/products/create/create" method="POST">
+      {{#if error}}
+      <span class="error">{{error.message}}</span>
+      {{/if}}
       <label for="name">Name</label>
-
-      <input {{#if name}}value="{{data.name}}" {{else}}class="err-input" {{/if}} type="text" id="name" name="name">
+      <input value="{{data.name}}" {{#unless name}} class="err-input" {{/unless}} type="text" id="name" name="name">
       <label for="name">Description</label>
-      <textarea {{#if description}}""{{else}}class="err-input" {{/if}} id="name"
-        name="description">{{#if description}}{{data.description}}{{/if}}</textarea>
+      <textarea {{#unless description}}class="err-input" {{/unless}} id="name"
+        name="description">{{data.description}}</textarea>
       <label for="image">ImageUrl</label>
-      <input {{#if imageUrl}}value="{{data.imageUrl}}" {{else}}class="err-input" {{/if}} type="text" id="image"
+      <input value="{{data.imageUrl}}" {{#unless imageUrl}} class="err-input" {{/unless}} type="text" id="image"
         name="imageUrl">
       <label for="difficulty">Difficulty</label>
       <select id="difficulty" name="difficultyLevel">
@@ -26,5 +28,5 @@
 </main>
 
 <script>
-    document.querySelector(`option[value="{{data.difficultyLevel}}"]`).setAttribute("selected", "true");
+  document.querySelector(`option[value="{{data.difficultyLevel}}"]`).setAttribute("selected", "true");
 </script>

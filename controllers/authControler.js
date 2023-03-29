@@ -1,16 +1,16 @@
 import { Router } from "express";
 import { config } from "../config/config.js";
-import { isClient } from "../middlewares/auth.js";
+import { isLogin, notLogin } from "../middlewares/auth.js";
 import { authService } from "../services/authService.js";
 
 const router = Router();
 
-router.get('/logout', (req, res) => {
+router.get('/logout', isLogin, (req, res) => {
     res.clearCookie(config.TOKEN_NAME)
-    .redirect("/")
+        .redirect("/")
 })
 
-router.get('/login', isClient, (req, res) => {
+router.get('/login',notLogin,  (req, res) => {
     res.render("login", {
         title: "Login",
         username: true,
@@ -18,7 +18,7 @@ router.get('/login', isClient, (req, res) => {
     })
 })
 
-router.get('/register',isClient, (req, res) => {
+router.get('/register', notLogin, (req, res) => {
     res.render("register", {
         title: "Register",
         username: true,
@@ -29,7 +29,7 @@ router.get('/register',isClient, (req, res) => {
 
 })
 
-router.post('/login',isClient, async (req, res) => {
+router.post('/login', notLogin, async (req, res) => {
     const { username, password } = req.body
     try {
 
@@ -49,7 +49,7 @@ router.post('/login',isClient, async (req, res) => {
     }
 })
 
-router.post('/register', isClient, async (req, res) => {
+router.post('/register', notLogin, async (req, res) => {
     const {
         username,
         password,

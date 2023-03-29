@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { validateProductInput } from './helpers/helperProduct.js';
 import { productsServer } from '../services/productService.js'
 import { accessoriesServer } from '../services/accessoryService.js';
-import { isLoggedIn } from '../middlewares/auth.js';
+import { isLogin } from '../middlewares/auth.js';
 
 const router = Router();
 
@@ -21,7 +21,7 @@ router.get("/", (req, res) => {
         });
 })
 
-router.get("/create", isLoggedIn, (req, res) => {
+router.get("/create", isLogin, (req, res) => {
     res.render("create", {
         title: "Create",
         name: true,
@@ -30,7 +30,7 @@ router.get("/create", isLoggedIn, (req, res) => {
     })
 })
 
-router.get("/:productId/attach", isLoggedIn, async (req, res) => {
+router.get("/:productId/attach", isLogin, async (req, res) => {
     let product = await productsServer.getById(req.params.productId);
     let accessories = await accessoriesServer.getNameAndId(product.accessories);
 
@@ -41,7 +41,7 @@ router.get("/:productId/attach", isLoggedIn, async (req, res) => {
     });
 })
 
-router.get("/products/:productId/edit", isLoggedIn, async (req, res) => {
+router.get("/:productId/edit", isLogin, async (req, res) => {
     let product = await productsServer.getById(req.params.productId);
     res.render("editCube", {
         title: "Edit Cube",
@@ -71,7 +71,26 @@ router.get("/details/:productId", (req, res) => {
         });
 })
 
-router.post("/:productId/attach", isLoggedIn, async (req, res) => {
+router.get("/:productId/delete", isLogin, async (req, res) => {
+    const product = await productsServer.getById(req.params.productId)
+    console.log(product);
+    res.render("deleteCube", {
+        title: "Delete Cube",
+        product
+    });
+});
+
+router.post("/:productId/delete", (req, res) => {
+    productsServer.deleteOneProduct(req.params.productId)
+        .then(() =>
+            res.redirect(`/products`))
+        .catch((error) => {
+            console.log(error);
+            res.status(404).render("404");
+        });
+})
+
+router.post("/:productId/attach", isLogin, async (req, res) => {
     productsServer.attachAccessory(req.params.productId, req.body)
         .then((product) =>
             res.redirect(`/products/details/${req.params.productId}`))
@@ -81,7 +100,7 @@ router.post("/:productId/attach", isLoggedIn, async (req, res) => {
         });
 })
 
-router.post("/:from/create", validateProductInput, isLoggedIn, (req, res) => {
+router.post("/:from/create", validateProductInput, isLogin, (req, res) => {
     productsServer.create(req.body)
         .then(() => res.redirect("/products"))
         .catch((error) => {
@@ -90,15 +109,13 @@ router.post("/:from/create", validateProductInput, isLoggedIn, (req, res) => {
         });
 })
 
-router.post("/:from/:productId/edit", validateProductInput, isLoggedIn, (req, res) => {
-    productsServer.updateOne(req.params.productId ,req.body)
+router.post("/:from/:productId/edit", validateProductInput, isLogin, (req, res) => {
+    productsServer.updateOne(req.params.productId, req.body)
         .then(() => res.redirect("/products/details/" + req.params.productId))
         .catch((error) => {
             console.log(error);
             res.status(500).render("500");
         });
 })
-
-
 
 export { router as productController };
