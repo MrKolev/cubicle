@@ -18,7 +18,8 @@
     "express-handlebars": "^7.0.2",
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^5.1.0",
-    "mongoose": "^7.0.2"
+    "mongoose": "^7.0.2",
+    "validator": "^13.9.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.21"
