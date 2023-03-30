@@ -1,12 +1,10 @@
-import isEmpty from "validator/lib/isemail";
-import isURL from "validator/lib/isemail";
-
+import validator from 'validator';
 
 
 export function validateProductInput(req, res, next) {
     let { name, description, imageUrl } = req.body
     try {
-        if (isEmpty(name) || isEmpty(description) || isEmpty(imageUrl)) {
+        if (validator.isEmpty(name) || validator.isEmpty(description) || validator.isEmpty(imageUrl)) {
             throw { message: 'All fields must be filled.' };
         }
         if (name.length < 2) {
@@ -17,7 +15,7 @@ export function validateProductInput(req, res, next) {
             description = false;
             throw { message: 'Description must be at least 2 characters.' };
         };
-        if (isURL(imageUrl), {
+        if (validator.isURL(imageUrl), {
             protocols: ['http', 'https', 'ftp'],
             require_tld: true,
             require_host: true,
